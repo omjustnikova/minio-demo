@@ -1,0 +1,18 @@
+info:
+  title: Simple API overview
+  version: 2.0.0
+paths:
+  /subscription/unsubscribe_link/1/applicant_digest:
+    get:
+      operationId: applicant_digest
+      summary: applicant_digest
+      responses:
+        '200':
+          description: |-
+            200 response
+          content:
+            application/json: {
+              "id": 1,
+              "entityId": 1,
+              "unsubscribeUrl": "/unsubscribe"
+            }

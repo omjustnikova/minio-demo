@@ -3,14 +3,13 @@ version: '3.7'
 
 services:
  minio:
-   image: minio/minio:latest
+   image: minio/minio:RELEASE.2023-04-13T03-08-07Z
    command: server --console-address ":9001" /data/
    ports:
      - "9000:9000"
      - "9001:9001"
-   environment:
-     MINIO_ROOT_USER: hhtech
-     MINIO_ROOT_PASSWORD: minio123
+   env_file:
+     - minio.env   
    volumes:
      - minio-storage:/data
    healthcheck:
@@ -18,5 +17,27 @@ services:
      interval: 30s
      timeout: 20s
      retries: 3
+
+ mc:
+   image: minio/mc
+   depends_on:
+     - minio
+   container_name: mctestenv
+   env_file:
+      - minio.env 
+   volumes:
+      - ./folder-to-upload:/app	
+   entrypoint: >
+     /bin/sh -c "
+     /usr/bin/mc config host add testminio http://minio:9000 $${MINIO_ROOT_USER} $${MINIO_ROOT_PASSWORD};
+
+     /usr/bin/mc mb testminio/$${MINIO_FIRST_BUCKET};
+
+     /usr/bin/mc cp --recursive  /app/$${MINIO_FIRST_BUCKET}/* testminio/$${MINIO_FIRST_BUCKET} 
+
+     /usr/bin/mc mb testminio/$${MINIO_SECOND_BUCKET};
+
+     /usr/bin/mc cp --recursive  /app/$${MINIO_SECOND_BUCKET}/* testminio/$${MINIO_SECOND_BUCKET}
+     "
 volumes:
  minio-storage:

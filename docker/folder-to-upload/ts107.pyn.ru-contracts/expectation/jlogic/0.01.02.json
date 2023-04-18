@@ -1,0 +1,35 @@
+{
+  "serviceName": "jlogic",
+  "expectations": [{
+    "expectedRequest": {
+      "method": "GET",
+      "path": "subscription/unsubscribe_link/1/applicant_digest",
+      "body": null,
+      "headers": {},
+      "queryParams": {}        
+    },
+    "expectedResponse": {
+      "status": 200,
+      "headers": {
+        "Content-Type": ["application/json"]
+      },
+      "responseBody": {
+        "id": 1,
+        "entityId": 1,
+        "unsubscribeUrl": "/unsubscribe"
+      }
+    },
+    "producerName": "subscriptions"
+  },
+  {
+    "expectedRequest": {
+      "method": "POST",
+      "path": "/subscription/externalemail/"
+      "body": null,
+      "headers": {},
+      "queryParams": {}
+    },                                                               
+    "expectedResponse": { "status":200, "headers": {}, "responseBody": null },
+    "producerName": "subscriptions" 
+  }]
+}
